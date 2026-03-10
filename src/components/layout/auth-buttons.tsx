@@ -6,15 +6,15 @@ import { Show } from "@clerk/nextjs";
 
 export function AuthButtons() {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       <Show when="signed-out">
         <SignInButton mode="modal">
-          <button className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-            Sign in
+          <button className="rounded-lg border border-white/[0.08] px-4 py-1.5 text-sm text-muted-foreground transition-all hover:border-white/[0.15] hover:text-foreground">
+            Log in
           </button>
         </SignInButton>
         <SignUpButton mode="modal">
-          <button className="inline-flex h-7 items-center justify-center rounded-lg border border-transparent bg-primary px-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+          <button className="rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110">
             Get Started
           </button>
         </SignUpButton>
@@ -22,7 +22,7 @@ export function AuthButtons() {
       <Show when="signed-in">
         <Link
           href="/dashboard"
-          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="rounded-lg border border-white/[0.08] px-4 py-1.5 text-sm text-muted-foreground transition-all hover:border-white/[0.15] hover:text-foreground"
         >
           Dashboard
         </Link>

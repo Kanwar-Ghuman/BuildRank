@@ -46,3 +46,13 @@ Use these as reference when writing commit messages.
 - Fetches page HTML, extracts text, calls OpenAI (gpt-4o-mini)
 - Structured scorecard: 5 categories (problem, pricing, audience, differentiation, trust), overall score, recommendations
 - ScorecardClient fetches and displays live results
+
+## Milestone 8: Database + save + share
+- Neon Postgres + Drizzle ORM
+- reviews table (id, slug, userId, url, scorecard, createdAt)
+- POST /api/reviews (save), GET /api/reviews (list), GET /api/reviews/[slug] (public)
+- Save button on scorecard (signed-in users)
+- Dashboard and Projects show saved reviews
+- /report/[slug] shareable public page
+- How It Works, Pricing, Examples pages with content
+- docs/SETUP.md with API key instructions

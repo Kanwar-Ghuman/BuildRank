@@ -1,44 +1,45 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "./container";
 import { AuthButtons } from "./auth-buttons";
+import { Zap } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <Container className="flex h-14 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <span className="relative flex h-8 w-8 items-center justify-center">
-            <Image
-              src="/logo.svg"
-              alt="BuildRank"
-              width={32}
-              height={32}
-              className="object-contain"
-              priority
-              unoptimized
-            />
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.06] bg-background/80 backdrop-blur-xl">
+      <Container className="flex h-16 items-center justify-between">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 font-bold tracking-tight"
+        >
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <Zap className="h-4 w-4 text-primary-foreground" />
           </span>
-          <span className="text-lg">BuildRank</span>
+          <span className="text-lg text-foreground">BuildRank</span>
         </Link>
-        <nav className="flex items-center gap-6">
+        <nav className="hidden items-center gap-8 md:flex">
           <Link
-            href="/how-it-works"
+            href="/feed"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            How It Works
+            Feed
           </Link>
           <Link
-            href="/pricing"
+            href="/leaderboard"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Pricing
+            Leaderboard
           </Link>
           <Link
-            href="/examples"
+            href="/submit"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Examples
+            Submit
+          </Link>
+          <Link
+            href="/analyze"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Analyze
           </Link>
           <AuthButtons />
         </nav>

@@ -2,8 +2,11 @@ import { SignIn } from "@clerk/nextjs";
 
 export default function SignInPage() {
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
-      <SignIn fallbackRedirectUrl="/dashboard" signUpUrl="/sign-up" />
+    <div className="relative flex min-h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_50%_40%,rgba(200,140,50,0.06),transparent)]" />
+      <div className="relative z-10">
+        <SignIn fallbackRedirectUrl="/dashboard" signUpUrl="/sign-up" />
+      </div>
     </div>
   );
 }

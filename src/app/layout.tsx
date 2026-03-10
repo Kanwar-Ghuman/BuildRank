@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono } from "next/font/google";
+import { dark } from "@clerk/themes";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "BuildRank — AI Landing Page Teardown for Founders",
-  description: "Submit your landing page. Get a structured scorecard. Fix what matters.",
+  title: "BuildRank — Post Projects. Get Rated. Climb the Leaderboard.",
+  description:
+    "Share what you've built, discover what others are building, and vote on the best. Tinder-style feed, community ratings, and leaderboards for builders.",
 };
 
 export default function RootLayout({
@@ -27,20 +29,56 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        baseTheme: undefined,
+        baseTheme: dark,
         variables: {
-          colorBackground: "hsl(0 0% 9%)",
-          colorInputBackground: "hsl(0 0% 14%)",
-          colorInputText: "hsl(0 0% 98%)",
-          colorText: "hsl(0 0% 98%)",
-          colorTextSecondary: "hsl(0 0% 58%)",
-          borderRadius: "0.5rem",
+          colorBackground: "#111114",
+          colorInputBackground: "#1a1a1f",
+          colorInputText: "#f5f5f5",
+          colorText: "#f5f5f5",
+          colorTextSecondary: "#777",
+          colorPrimary: "#d4943a",
+          colorDanger: "#ef4444",
+          colorTextOnPrimaryBackground: "#111",
+          borderRadius: "0.75rem",
+          fontFamily: "Inter, system-ui, sans-serif",
+          fontSize: "14px",
+        },
+        elements: {
+          card: {
+            backgroundColor: "#111114",
+            border: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.6)",
+          },
+          headerTitle: { color: "#fff", fontWeight: 700 },
+          headerSubtitle: { color: "#777" },
+          socialButtonsBlockButton: {
+            backgroundColor: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "#f5f5f5",
+          },
+          socialButtonsBlockButtonText: { color: "#f5f5f5", fontWeight: 500 },
+          formFieldInput: {
+            backgroundColor: "#1a1a1f",
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "#f5f5f5",
+          },
+          formButtonPrimary: {
+            backgroundColor: "#d4943a",
+            color: "#111",
+            fontWeight: 600,
+          },
+          footerActionLink: { color: "#d4943a" },
+          dividerLine: { backgroundColor: "rgba(255,255,255,0.06)" },
+          dividerText: { color: "#555" },
+          formFieldLabel: { color: "#999" },
+          identityPreviewEditButton: { color: "#d4943a" },
+          formResendCodeLink: { color: "#d4943a" },
         },
       }}
     >
       <html lang="en" className="dark">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}
+          className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
         >
           <Header />
           {children}
