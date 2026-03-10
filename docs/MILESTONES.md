@@ -40,3 +40,9 @@ Use these as reference when writing commit messages.
 - Protected /dashboard routes
 - Sign-in and sign-up pages
 - AuthButtons in header (Sign in, Get Started when signed out; Dashboard, UserButton when signed in)
+
+## Milestone 7: AI analysis
+- POST /api/analyze with URL
+- Fetches page HTML, extracts text, calls OpenAI (gpt-4o-mini)
+- Structured scorecard: 5 categories (problem, pricing, audience, differentiation, trust), overall score, recommendations
+- ScorecardClient fetches and displays live results

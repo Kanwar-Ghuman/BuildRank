@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Optional: Copy `.env.example` to `.env.local` and add Clerk keys for production auth. Keyless mode works for development.
+Copy `.env.example` to `.env.local`. Add `OPENAI_API_KEY` for analysis. Add Clerk keys for production auth (keyless mode works for dev).
 
 ## Project structure
 

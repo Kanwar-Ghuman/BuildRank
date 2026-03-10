@@ -19,7 +19,6 @@ export function AnalyzeForm() {
       if (!trimmed) return;
       setIsLoading(true);
       router.push(`/analyze?url=${encodeURIComponent(trimmed)}`);
-      setIsLoading(false);
     },
     [url, router]
   );
