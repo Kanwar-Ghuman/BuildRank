@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 import { desc, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -29,6 +29,26 @@ export async function GET(req: NextRequest) {
       .limit(limit)
       .offset(offset);
 
+    // Resolve creator info from Clerk
+    const uniqueUserIds = [...new Set(rows.map((r) => r.userId))];
+    const clerk = await clerkClient();
+    const userMap = new Map<string, { name: string; avatar: string | null }>();
+
+    await Promise.all(
+      uniqueUserIds.map(async (uid) => {
+        try {
+          const user = await clerk.users.getUser(uid);
+          const name =
+            [user.firstName, user.lastName].filter(Boolean).join(" ") ||
+            user.username ||
+            "Anonymous";
+          userMap.set(uid, { name, avatar: user.imageUrl ?? null });
+        } catch {
+          userMap.set(uid, { name: "Anonymous", avatar: null });
+        }
+      }),
+    );
+
     return Response.json(
       rows.map((r) => ({
         ...r,
@@ -37,6 +57,7 @@ export async function GET(req: NextRequest) {
           r.ratingCount > 0
             ? Math.round((r.ratingSum / r.ratingCount) * 10) / 10
             : 0,
+        creator: userMap.get(r.userId) ?? { name: "Anonymous", avatar: null },
       })),
     );
   } catch (err) {

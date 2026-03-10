@@ -2,14 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  Star,
-  Trophy,
-  Medal,
-  Award,
-  ExternalLink,
-  Loader2,
-} from "lucide-react";
+import Image from "next/image";
+import { Star, Trophy, Loader2 } from "lucide-react";
 import { Container } from "@/components/layout/container";
 
 interface Project {
@@ -17,14 +11,15 @@ interface Project {
   slug: string;
   title: string;
   tagline: string;
+  image: string | null;
   url: string;
   tags: string[];
   avgRating: number;
   ratingCount: number;
+  creator: { name: string; avatar: string | null };
 }
 
-const RANK_ICONS = [Trophy, Medal, Award];
-const RANK_COLORS = ["text-yellow-400", "text-gray-300", "text-amber-600"];
+const RANK_MEDALS: Record<number, string> = { 0: "🥇", 1: "🥈", 2: "🥉" };
 
 export function LeaderboardClient() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -44,105 +39,133 @@ export function LeaderboardClient() {
     <main className="relative min-h-[calc(100vh-4rem)]">
       <div className="pointer-events-none absolute inset-0 -top-40 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(200,140,50,0.06),transparent)]" />
       <Container className="relative z-10 py-12 md:py-20">
-        <div className="mx-auto max-w-3xl">
-          <div className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-              <span className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
+        <div className="mx-auto max-w-5xl">
+          {/* Header */}
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
                 Leaderboard
-              </span>
-            </h1>
-            <p className="mt-3 text-lg text-muted-foreground">
-              The highest-rated projects on BuildRank, ranked by community
-              votes.
-            </p>
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Top-rated projects ranked by the community
+              </p>
+            </div>
           </div>
 
-          <div className="mt-12">
-            {loading ? (
-              <div className="flex items-center justify-center py-16">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          {loading ? (
+            <div className="flex items-center justify-center py-24">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-white/[0.08] p-16 text-center">
+              <Trophy className="mx-auto h-10 w-10 text-muted-foreground/40" />
+              <h3 className="mt-4 font-semibold">No ranked projects yet</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Projects need at least one rating to appear here.
+              </p>
+              <Link
+                href="/feed"
+                className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110"
+              >
+                Rate some projects
+              </Link>
+            </div>
+          ) : (
+            <div className="overflow-hidden rounded-xl border border-white/[0.06]">
+              {/* Table header */}
+              <div className="grid grid-cols-[3rem_1fr_1fr_6rem_5rem] items-center gap-x-2 border-b border-white/[0.06] bg-white/[0.02] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70 md:grid-cols-[3.5rem_1.5fr_1fr_6rem_6rem]">
+                <span>#</span>
+                <span>Project</span>
+                <span>Creator</span>
+                <span className="text-right">Rating</span>
+                <span className="text-right">Votes</span>
               </div>
-            ) : projects.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-white/[0.08] p-12 text-center">
-                <Trophy className="mx-auto h-10 w-10 text-muted-foreground/40" />
-                <h3 className="mt-4 font-semibold">No ranked projects yet</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Projects need at least one rating to appear here.
-                </p>
+
+              {/* Rows */}
+              {projects.map((project, i) => (
                 <Link
-                  href="/feed"
-                  className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110"
+                  key={project.id}
+                  href={`/project/${project.slug}`}
+                  className="group grid grid-cols-[3rem_1fr_1fr_6rem_5rem] items-center gap-x-2 border-b border-white/[0.04] px-5 py-4 transition-colors last:border-b-0 hover:bg-white/[0.03] md:grid-cols-[3.5rem_1.5fr_1fr_6rem_6rem]"
                 >
-                  Rate some projects
-                </Link>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {projects.map((project, i) => {
-                  const RankIcon = RANK_ICONS[i] ?? null;
-                  const rankColor = RANK_COLORS[i] ?? "text-muted-foreground";
+                  {/* Rank */}
+                  <span className="flex items-center justify-center text-base">
+                    {RANK_MEDALS[i] !== undefined ? (
+                      <span className="text-xl">{RANK_MEDALS[i]}</span>
+                    ) : (
+                      <span className="font-semibold text-muted-foreground">
+                        {i + 1}
+                      </span>
+                    )}
+                  </span>
 
-                  return (
-                    <Link
-                      key={project.id}
-                      href={`/project/${project.slug}`}
-                      className="group flex items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
-                    >
-                      {/* Rank  */}
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center">
-                        {RankIcon ? (
-                          <RankIcon className={`h-6 w-6 ${rankColor}`} />
-                        ) : (
-                          <span className="text-lg font-bold text-muted-foreground">
-                            {i + 1}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Info */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="truncate font-semibold text-foreground group-hover:text-primary transition-colors">
-                            {project.title}
-                          </h3>
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                        </div>
-                        <p className="mt-0.5 truncate text-sm text-muted-foreground">
-                          {project.tagline}
-                        </p>
-                        {project.tags.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-1.5">
-                            {project.tags.slice(0, 3).map((tag) => (
-                              <span
-                                key={tag}
-                                className="rounded-full bg-white/[0.05] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Rating */}
-                      <div className="flex shrink-0 flex-col items-end gap-0.5">
-                        <div className="flex items-center gap-1.5">
-                          <Star className="h-4 w-4 fill-primary text-primary" />
-                          <span className="text-lg font-bold text-foreground">
-                            {project.avgRating}
-                          </span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {project.ratingCount}{" "}
-                          {project.ratingCount === 1 ? "vote" : "votes"}
+                  {/* Project */}
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/[0.06] bg-white/[0.04]">
+                      {project.image ? (
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          width={36}
+                          height={36}
+                          className="h-full w-full object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="text-sm font-bold text-primary">
+                          {project.title.charAt(0).toUpperCase()}
                         </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
+                        {project.title}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {project.tagline}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Creator */}
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/[0.06] bg-white/[0.04]">
+                      {project.creator.avatar ? (
+                        <Image
+                          src={project.creator.avatar}
+                          alt={project.creator.name}
+                          width={28}
+                          height={28}
+                          className="h-full w-full object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="text-[10px] font-bold text-muted-foreground">
+                          {project.creator.name.charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <span className="truncate text-sm text-muted-foreground">
+                      {project.creator.name}
+                    </span>
+                  </div>
+
+                  {/* Rating */}
+                  <div className="flex items-center justify-end gap-1">
+                    <Star className="h-3.5 w-3.5 fill-primary text-primary" />
+                    <span className="text-sm font-bold text-foreground">
+                      {project.avgRating.toFixed(1)}
+                    </span>
+                  </div>
+
+                  {/* Votes */}
+                  <span className="text-right text-sm text-muted-foreground">
+                    {project.ratingCount}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </Container>
     </main>
