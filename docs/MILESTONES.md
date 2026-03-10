@@ -34,3 +34,9 @@ Use these as reference when writing commit messages.
 - Projects page (empty state)
 - Settings page (auth placeholder)
 - Dashboard link in header
+
+## Milestone 6: Auth (Clerk)
+- Clerk provider and middleware
+- Protected /dashboard routes
+- Sign-in and sign-up pages
+- AuthButtons in header (Sign in, Get Started when signed out; Dashboard, UserButton when signed in)

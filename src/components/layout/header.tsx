@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "./container";
+import { AuthButtons } from "./auth-buttons";
 
 export function Header() {
   return (
@@ -39,18 +40,7 @@ export function Header() {
           >
             Examples
           </Link>
-          <Link
-            href="/dashboard"
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/#analyze"
-            className="inline-flex h-7 items-center justify-center rounded-lg border border-transparent bg-primary px-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Get Started
-          </Link>
+          <AuthButtons />
         </nav>
       </Container>
     </header>

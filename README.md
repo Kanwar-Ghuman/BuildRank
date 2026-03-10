@@ -9,6 +9,8 @@ npm install
 npm run dev
 ```
 
+Optional: Copy `.env.example` to `.env.local` and add Clerk keys for production auth. Keyless mode works for development.
+
 ## Project structure
 
 - `docs/PRD.md` — Product requirements
@@ -17,5 +19,5 @@ npm run dev
 
 ## Stack
 
-Next.js 16, TypeScript, Tailwind v4, shadcn/ui
+Next.js 16, TypeScript, Tailwind v4, shadcn/ui, Clerk
 # BuildRank
